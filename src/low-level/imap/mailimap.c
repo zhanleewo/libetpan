@@ -2446,7 +2446,11 @@ int mailimap_send_current_tag(mailimap * session)
   int r;
   
   session->imap_tag ++;
-  snprintf(tag_str, 15, "%i", session->imap_tag);
+  if(mailimap_is_complex_command_tag_enabled(session)) {
+  	snprintf(tag_str, 15, "C%i", session->imap_tag);
+  } else {
+  	snprintf(tag_str, 15, "%i", session->imap_tag);
+  }
 
   r = mailimap_tag_send(session->imap_stream, tag_str);
   if (r != MAILIMAP_NO_ERROR)
